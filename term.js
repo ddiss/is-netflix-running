@@ -152,23 +152,25 @@ Term.prototype.open = function(parent_el, textarea_el)
     this.textarea_el = textarea_el;
 
     this.refresh(0, this.h - 1);
-    
-    // key handler
-    document.addEventListener("keydown", 
-                              this.keyDownHandler.bind(this), true);
-    document.addEventListener("keyup", 
-                              this.keyUpHandler.bind(this), true);
-    document.addEventListener("blur", 
-                              this.blurHandler.bind(this), true);
-    document.addEventListener("keypress", 
-                              this.keyPressHandler.bind(this), true);
+
+    if (this.handler !== null) {
+        // key handler
+        document.addEventListener("keydown",
+                                  this.keyDownHandler.bind(this), true);
+        document.addEventListener("keyup",
+                                  this.keyUpHandler.bind(this), true);
+        document.addEventListener("blur",
+                                  this.blurHandler.bind(this), true);
+        document.addEventListener("keypress",
+                                  this.keyPressHandler.bind(this), true);
+        // paste
+        document.defaultView.addEventListener("paste",
+                                              this.pasteHandler.bind(this), false);
+    }
     // wheel
-    this.term_el.addEventListener("wheel", 
+    this.term_el.addEventListener("wheel",
                                   this.wheelHandler.bind(this), false);
-    // paste
-    document.defaultView.addEventListener("paste", 
-                                          this.pasteHandler.bind(this), false);
-    
+
     // cursor blinking
     term = this;
     setInterval(function() { term.cursor_timer_cb(); }, 1000);
